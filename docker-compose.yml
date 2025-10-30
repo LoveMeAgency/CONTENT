@@ -1,26 +1,21 @@
-version: "3.9"
-
 x-bot-template: &bot-template
   restart: always
   working_dir: /app
   command: ["python", "-u", "bot.py"]
   environment:
-    TZ: Europe/Paris
+    TZ: Europe/Paris           # ajuste si besoin
     PYTHONUNBUFFERED: "1"
   logging:
     driver: json-file
     options:
       max-size: "10m"
       max-file: "3"
-  # Chaque service a déjà un HEALTHCHECK depuis son Dockerfile
 
 services:
   autocontenuemmabot:
     <<: *bot-template
     build: ./autocontenuemmabot
     container_name: autocontenuemmabot
-    env_file:
-      - ./autocontenuemmabot/.env
     volumes:
       - ./autocontenuemmabot:/app
       - ./autocontenuemmabot/session:/app/session
